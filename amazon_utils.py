@@ -1,3 +1,7 @@
+# All the code required to make correctly signed requests to Amazon for
+# information by ISBN. You'll need your amazon access key, associate id
+# and secret to use this.
+
 import datetime
 import hashlib
 import urllib.parse
