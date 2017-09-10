@@ -65,17 +65,18 @@ def create_signed_url(amazon_access_key, amazon_associate_tag, args_dict, secret
     signature = percent_encode_rfc_3986(create_hmac(secret, to_sign))
     return api_url + "?" + merged_arg_str + "&Signature=" + signature
 
+def create_amazon_lookup_url(api_host, amazon_access_key, amazon_associate_tag, args_dict, secret):
+    return "https://" + api_host + create_signed_url(amazon_access_key, amazon_associate_tag, args_dict, secret)
+
 def find_by_isbn(amazon_access_key, amazon_associate_tag, secret, isbn):
     args_dict = OrderedDict([("Operation", "ItemLookup"),
                              ("ItemId", isbn),
                              ("IdType", "ASIN")])
-    url = "https://" + api_host + create_signed_url(amazon_access_key, amazon_associate_tag, args_dict, secret)
-    return url
+    return create_amazon_lookup_url(api_host, amazon_access_key, amazon_associate_tag, args_dict, secret)
 
 def find_offer_summary_by_isbn(amazon_access_key, amazon_associate_tag, secret, isbn):
     args_dict = OrderedDict([("ResponseGroup", "OfferSummary"),
                              ("Operation", "ItemLookup"),
                              ("ItemId", isbn),
                              ("IdType", "ASIN")])
-    url = "https://" + api_host + create_signed_url(amazon_access_key, amazon_associate_tag, args_dict, secret)
-    return url
+    return create_amazon_lookup_url(api_host, amazon_access_key, amazon_associate_tag, args_dict, secret)
